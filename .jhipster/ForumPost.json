@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20240819205441"
+  },
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "created_at",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "created_by",
+      "fieldType": "String"
+    }
+  ],
+  "name": "ForumPost",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "forumPost",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "no"
+}

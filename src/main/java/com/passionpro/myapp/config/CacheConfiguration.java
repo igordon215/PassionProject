@@ -50,6 +50,11 @@ public class CacheConfiguration {
             createCache(cm, com.passionpro.myapp.domain.User.class.getName());
             createCache(cm, com.passionpro.myapp.domain.Authority.class.getName());
             createCache(cm, com.passionpro.myapp.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.passionpro.myapp.domain.ForumPost.class.getName());
+            createCache(cm, com.passionpro.myapp.domain.ForumPost.class.getName() + ".posts");
+            createCache(cm, com.passionpro.myapp.domain.Post.class.getName());
+            createCache(cm, com.passionpro.myapp.domain.Post.class.getName() + ".comments");
+            createCache(cm, com.passionpro.myapp.domain.Comment.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
