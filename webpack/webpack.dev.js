@@ -50,15 +50,34 @@ module.exports = async options =>
       static: {
         directory: './target/classes/static/',
       },
-      port: 9060,
-      proxy: [
-        {
-          context: ['/api', '/services', '/management', '/v3/api-docs', '/h2-console'],
+      port: 9000,
+      proxy: {
+        '/api': {
           target: 'http://localhost:8080',
           secure: false,
           changeOrigin: true,
         },
-      ],
+        '/services': {
+          target: 'http://localhost:8080',
+          secure: false,
+          changeOrigin: true,
+        },
+        '/management': {
+          target: 'http://localhost:8080',
+          secure: false,
+          changeOrigin: true,
+        },
+        '/v3/api-docs': {
+          target: 'http://localhost:8080',
+          secure: false,
+          changeOrigin: true,
+        },
+        '/h2-console': {
+          target: 'http://localhost:8080',
+          secure: false,
+          changeOrigin: true,
+        },
+      },
       historyApiFallback: true,
     },
     stats: process.env.JHI_DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
@@ -74,7 +93,7 @@ module.exports = async options =>
           host: 'localhost',
           port: 9000,
           proxy: {
-            target: 'http://localhost:9060',
+            target: 'http://localhost:9000',
             ws: true,
             proxyOptions: {
               changeOrigin: false, //pass the Host header to the backend unchanged  https://github.com/Browsersync/browser-sync/issues/430
