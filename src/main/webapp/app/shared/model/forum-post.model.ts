@@ -3,8 +3,8 @@ import { IUser } from 'app/shared/model/user.model';
 
 export interface IForumPost {
   id?: number;
-  name?: string;
-  description?: string | null;
+  title?: string;
+  content?: string | null;
   created_at?: dayjs.Dayjs | null;
   created_by?: string | null;
   user?: IUser | null;
