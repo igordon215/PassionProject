@@ -3,20 +3,16 @@ import './app.scss';
 import 'app/config/dayjs';
 
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getSession } from 'app/shared/reducers/authentication';
 import { getProfile } from 'app/shared/reducers/application-profile';
 import ErrorBoundary from 'app/shared/error/error-boundary';
-import { AUTHORITIES } from 'app/config/constants';
-import { hasAnyAuthority } from 'app/shared/auth/private-route';
-
-import Header from 'app/modules/forum/Header';
-import ForumList from 'app/modules/forum/ForumList';
-import ForumPost from 'app/modules/forum/ForumPost';
-import CreatePost from 'app/modules/forum/CreatePost';
+import AppRoutes from 'app/routes';
+import Header from 'app/shared/layout/header/header';
+import Footer from 'app/shared/layout/footer/footer';
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -26,9 +22,6 @@ export const App = () => {
     dispatch(getProfile());
   }, []);
 
-  const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated);
-  const isAdmin = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN]));
-
   return (
     <Router>
       <div className="app-container">
@@ -36,15 +29,12 @@ export const App = () => {
         <ErrorBoundary>
           <Header />
         </ErrorBoundary>
-        <div className="container mt-3">
+        <div className="container-fluid view-container" id="app-view-container">
           <ErrorBoundary>
-            <Routes>
-              <Route path="/" element={<ForumList />} />
-              <Route path="/forum/:id" element={<ForumPost />} />
-              <Route path="/forum/new" element={isAuthenticated ? <CreatePost /> : <ForumList />} />
-            </Routes>
+            <AppRoutes />
           </ErrorBoundary>
         </div>
+        <Footer />
       </div>
     </Router>
   );
