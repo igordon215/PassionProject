@@ -3,21 +3,20 @@ import './app.scss';
 import 'app/config/dayjs';
 
 import React, { useEffect } from 'react';
-import { Card } from 'reactstrap';
-import { BrowserRouter } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getSession } from 'app/shared/reducers/authentication';
 import { getProfile } from 'app/shared/reducers/application-profile';
-import Header from 'app/shared/layout/header/header';
-import Footer from 'app/shared/layout/footer/footer';
-import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
-import AppRoutes from 'app/routes';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 
-const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
+import Header from 'app/modules/forum/Header';
+import ForumList from 'app/modules/forum/ForumList';
+import ForumPost from 'app/modules/forum/ForumPost';
+import CreatePost from 'app/modules/forum/CreatePost';
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -29,34 +28,25 @@ export const App = () => {
 
   const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated);
   const isAdmin = useAppSelector(state => hasAnyAuthority(state.authentication.account.authorities, [AUTHORITIES.ADMIN]));
-  const ribbonEnv = useAppSelector(state => state.applicationProfile.ribbonEnv);
-  const isInProduction = useAppSelector(state => state.applicationProfile.inProduction);
-  const isOpenAPIEnabled = useAppSelector(state => state.applicationProfile.isOpenAPIEnabled);
 
-  const paddingTop = '60px';
   return (
-    <BrowserRouter basename={baseHref}>
-      <div className="app-container" style={{ paddingTop }}>
+    <Router>
+      <div className="app-container">
         <ToastContainer position="top-left" className="toastify-container" toastClassName="toastify-toast" />
         <ErrorBoundary>
-          <Header
-            isAuthenticated={isAuthenticated}
-            isAdmin={isAdmin}
-            ribbonEnv={ribbonEnv}
-            isInProduction={isInProduction}
-            isOpenAPIEnabled={isOpenAPIEnabled}
-          />
+          <Header />
         </ErrorBoundary>
-        <div className="container-fluid view-container" id="app-view-container">
-          <Card className="jh-card">
-            <ErrorBoundary>
-              <AppRoutes />
-            </ErrorBoundary>
-          </Card>
-          <Footer />
+        <div className="container mt-3">
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={<ForumList />} />
+              <Route path="/forum/:id" element={<ForumPost />} />
+              <Route path="/forum/new" element={isAuthenticated ? <CreatePost /> : <ForumList />} />
+            </Routes>
+          </ErrorBoundary>
         </div>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 };
 
