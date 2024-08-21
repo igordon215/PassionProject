@@ -2,9 +2,6 @@
 @import 'bootstrap-variables';
 // Import Bootstrap source files from node_modules
 @import 'bootstrap/scss/bootstrap';
-// Import forum styles
-@import 'modules/forum/forum.scss';
-
 body {
   background: #fafafa;
   margin: 0;
